@@ -1,0 +1,23 @@
+{
+  "name": "deplexor",
+  "version": "0.1.0",
+  "description": "Minimal V8-based multi-threaded JS runtime",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anqurvanillapy/deplexor.js.git"
+  },
+  "keywords": [
+    "js-runtime",
+    "multi-threaded"
+  ],
+  "author": "AnqurVanillapy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anqurvanillapy/deplexor.js/issues"
+  },
+  "homepage": "https://github.com/anqurvanillapy/deplexor.js#readme"
+}
