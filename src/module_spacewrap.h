@@ -17,7 +17,7 @@ private:
 	template <typename T>
 	friend void ctor_defaultcb(const v8::FunctionCallbackInfo<v8::Value>& args);
 
-	static void getid(const v8::FunctionCallbackInfo<v8::Value>& args);
+	static void id(const v8::FunctionCallbackInfo<v8::Value>& args);
 	static void brdcst(const v8::FunctionCallbackInfo<v8::Value>& args);
 	static void brdcst_sync(const v8::FunctionCallbackInfo<v8::Value>& args);
 	static void exec(const v8::FunctionCallbackInfo<v8::Value>& args);

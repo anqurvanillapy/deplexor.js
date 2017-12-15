@@ -16,6 +16,9 @@ namespace deplexor {
 #define GET_PERSISTENT_CTOR(classname) \
 	v8::Local<v8::Function>::New(v8::Isolate::GetCurrent(), classname::ctor_)
 
+#define SET_PERSISTENT_CTOR(classname, func) \
+	ctor_.Reset(v8::Isolate::GetCurrent(), func)
+
 #define EXPORT_OBJECTWRAP(exports, exportname, classname)           \
 	exports->Set(v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), \
 										 exportname),               \
@@ -28,10 +31,14 @@ ctor_defaultcb(const v8::FunctionCallbackInfo<v8::Value>& args)
 	auto isolate = v8::Isolate::GetCurrent();
 	v8::HandleScope scope(isolate);
 
-	JS_CHECK_ARG(isolate, args.Length() == 0, "no args for '%s' class ctor",
+	JS_ASSERT(isolate, args.Length() == 0, "no args for `%s' class ctor",
+			  TWrap::classname);
+	JS_ASSERT(isolate, args.IsConstructCall(), "class `%s' ctor call only",
 			  TWrap::classname);
 
-	auto wrap = new TWrap;
+	auto wrap = new TWrap();
+	wrap->Wrap(args.This());
+	args.GetReturnValue().Set(args.This());
 }
 
 } /* namespace deplexor */
