@@ -6,6 +6,11 @@
 
 #include "utils_v8.h"
 
+#define IGNORE_EXPR_RET(expr) do {  \
+		auto _ = (expr);            \
+		(void)_;                    \
+	} while (0)
+
 static constexpr size_t MAX_ASSERT_SIZE = 512;
 
 #define RT_ASSERT(expr, format, ...) do {                                   \

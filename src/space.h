@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common.h"
-#include "retno.h"
+#include "result.h"
 
 namespace deplexor {
 
@@ -10,8 +10,17 @@ using brdcst_fn_t = std::function<void(const std::string&, brdcst_cb_t)>;
 
 class space {
 public:
-	const std::string& id() const { return id_; }
-	void brdcst(const std::string& src, brdcst_cb_t cb);
+/*
+	explicit space(const std::string& id, const std::string& settings = "")
+		: id_{id}
+	{
+
+	}
+*/
+
+	const std::string&  id() const { return id_; }
+	void                brdcst(const std::string& src, brdcst_cb_t cb);
+	retno_t             brdcst_sync(const std::string& src);
 private:
 	std::string id_;
 	brdcst_fn_t brdcst_fn_;

@@ -24,8 +24,8 @@ run_cmpl_cb(uv_async_t* work)
 	v8::HandleScope scope(isolate);
 
 	auto ctx = static_cast<cmpl_ctx_t*>(work->data);
-	auto jscb = v8::Local<v8::Function>::New(isolate, ctx->js_cb);
-	ctx->cmpl_cb(jscb, ctx->result);
+	auto js_cb = v8::Local<v8::Function>::New(isolate, ctx->js_cb);
+	ctx->cmpl_cb(js_cb, ctx->result);
 
 	uv_close(reinterpret_cast<uv_handle_t*>(work), [](uv_handle_t* work) {
 		auto ctx = static_cast<cmpl_ctx_t*>(work->data);

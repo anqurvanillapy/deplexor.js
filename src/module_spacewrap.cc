@@ -2,7 +2,8 @@
 
 #include "space.h"
 #include "async.h"
-#include "retno.h"
+#include "result.h"
+#include "utils.h"
 
 namespace deplexor {
 
@@ -77,13 +78,57 @@ spacewrap::brdcst(const v8::FunctionCallbackInfo<v8::Value>& args)
 			std::vector<v8::Local<v8::Value>> argv;
 			auto n = static_cast<retno_t>(reinterpret_cast<uintptr_t>(result));
 			argv.emplace_back(v8::Uint32::NewFromUnsigned(isolate, n));
-			auto ret = js_cb->Call(icxt,
-								   icxt->Global(),
-								   static_cast<int>(argv.size()),
-								   argv.data());
-			(void)ret;
+			IGNORE_EXPR_RET(js_cb->Call(icxt,
+										icxt->Global(),
+										static_cast<int>(argv.size()),
+										argv.data()));
+		}
+	);
+}
+
+void
+spacewrap::brdcst_sync(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+	auto isolate = v8::Isolate::GetCurrent();
+	
+	JS_ASSERT(isolate, args[0]->IsString(),
+			  "arg #1 of space.broadcastSync must be a string");
+
+	v8::String::Utf8Value src(args[0]->ToString());
+
+	auto wrap = ObjectWrap::Unwrap<spacewrap>(args.Holder());
+	auto ret = wrap->space_pxy_->brdcst_sync(*src);
+	args.GetReturnValue().Set(v8::Uint32::NewFromUnsigned(isolate, ret));
+}
+
+void
+spacewrap::exec(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+	auto isolate = v8::Isolate::GetCurrent();
+
+	JS_ASSERT(isolate, args[0]->IsObject(),
+			  "arg #1 of space.exec must be an object");
+	JS_ASSERT(isolate, args[1]->IsFunction(),
+			  "arg #2 of space.exec must be a function");
+
+	do_async_work(v8::Local<v8::Function>::Cast(args[1]),
+		[&args](std::function<void(void*)> cmpl) {
+			/* TODO */
+		},
+		[](auto js_cb, void* result) {
+			/* TODO */
 		}
 	);
 }
 
 } /* namespace deplexor */
+
+namespace {
+
+v8::Local<v8::Object>
+create_req_n_exec(const deplexor::result_t& result)
+{
+	/* TODO */
+}
+
+} /* namespace */
